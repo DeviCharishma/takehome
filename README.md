@@ -15,39 +15,37 @@ taking more than a week.
 
 ### Tech Requirements
 
-* You must use NextJS for the front-end, and you must write your own logic for the assignment
-  requirements.
-* The assignment makes heavy use of tables, and you must write your own logic for anything
-  explicitly stated in the user stories.
-    * Using sorting/filtering as an example, we don’t want to see the built-in sorting from a
-      third-party package. While normally it would be perfectly acceptable to find a well-rounded
-      third-party solution, this is ultimately an examination of _**your**_ skills!
+* You must use NextJS for the front-end. You are encouraged to use third-party libraries
+  such as a UI framework or form validation library for your own convenience.
 * The back-end must be done with the provided express server. Add on to it as much as you’d like,
   but the assignment must be completed using express.
+* You must implement your solution using the provided database schema, since this is what we'll be
+  using to test your code. The schema is in `packages/back-end/src/services/db.ts`.
 
 ### Important Information
 
 * We've provided a seed script that will scaffold the database with 100 users to test and prototype
-  with.
+  with: `npm run seed`.
 * Once you’re ready for hand-off, there’s a script called “seed-prod” that adds 5,000 members. This
   is what we will be testing with, so it’d be a good idea to test it once with “production” data to
-  make sure it meets your own expectations.
+  make sure it meets your own expectations: `npm run seed-prod`.
 
 # Assignment
 
 You've been tasked with writing a back-office tool to display all members currently in the database.
-Product owners have also signaled that they would like to be able to manage people (add, edit,
+Product owners have also signaled that they would like to be able to manage users (add, edit,
 delete) and search through the database. Both POs also mentioned that they would like to be able to
 do all this on their phone as well, since they find themselves out of the office quite a bit. With
 this unfortunately vague set of requirements in mind, you've cobbled together a basic set of
 user-stories and got them signed off on as adequate for MVP:
 
-* As a user, I want to be able to use the Application on both desktop and mobile.
-* As a user, I want to be able to add a new person to the database.
-* As a user, I want to be able to update a person in the database.
+* As a user, I want to be able to use the application on both desktop and mobile.
+* As a user, I want to be able to add a new user to the database.
+* As a user, I want to be able to update a user in the database.
 * As a user, I want to be able to delete a user from the database.
 * As a user, I want to be able to sort the table.
 * As a user, I want to be able to search the table.
+* As a user, I want to be able to infintely scroll the table to view more users.
 
 Outside of the task, there are also some engineering requirements:
 
