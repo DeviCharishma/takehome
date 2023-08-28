@@ -16,7 +16,7 @@ taking more than a week.
 ### Tech Requirements
 
 * You must use NextJS for the front-end. You are encouraged to use third-party libraries
-  such as a UI framework or form validation library for your own convenience.
+  such as a form validation library for your own convenience.
 * The back-end must be done with the provided express server. Add on to it as much as you’d like,
   but the assignment must be completed using express.
 * You must implement your solution using the provided database schema, since this is what we'll be
