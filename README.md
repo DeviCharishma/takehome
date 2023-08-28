@@ -17,6 +17,8 @@ taking more than a week.
 
 * You must use NextJS for the front-end. You are encouraged to use third-party libraries
   such as a form validation library for your own convenience.
+* We have set up the front-end with the Tailwind CSS framework, which is what we use in our own
+  product. You're not required to use Tailwind, but demonstrating proficiency with it is a plus.
 * The back-end must be done with the provided express server. Add on to it as much as you’d like,
   but the assignment must be completed using express.
 * You must implement your solution using the provided database schema, since this is what we'll be
