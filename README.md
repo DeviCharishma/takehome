@@ -73,6 +73,11 @@ NPM script “prepare-submission” in the top-level of the workspace, and that 
 file called “submission.bundle”. Zip this file up and submit it
 to [this google form](https://forms.gle/wLifwTeipsfshekw9).
 
+# Evaluation
+Your submission will be evaluated according to:
+1. The quality of the implementation - Is the code clear, concise, and correct in implementing the desired experience?
+2. The quality of the user experience - Is it the best user experience for mobile and desktop users?
+
 # Questions/More Information
 
 If you have any questions or concerns, please reach out to us
