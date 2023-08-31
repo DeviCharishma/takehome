@@ -26,6 +26,8 @@ taking more than a week.
 
 ### Important Information
 
+* You must install dependencies first: `npm i`.
+* Then, you can use the following command to start up the frontend and backend: `npm run start`.
 * We've provided a seed script that will scaffold the database with 100 users to test and prototype
   with: `npm run seed`.
 * Once you’re ready for hand-off, there’s a script called “seed-prod” that adds 5,000 members. This
