@@ -1,66 +1,62 @@
 # Atllas Takehome
 
 Welcome! We're excited that you’ve applied to be an engineer, and we’re looking forward to
-evaluating your take-home! This project isn’t meant to be anything too scary, it’s just a way for
-you to showcase your ability to write a simple, full-stack CRUD application.
+evaluating your takehome! This project is meant to showcase your ability to write a
+simple, full-stack CRUD application.
 
 This is a bit of a long read, but it’s all important information so make sure you take the time!
 
 ### Time Requirements
 
-There are no hard time requirements. We expect it'll take around four hours, but everyone's
-different and comfortable with different aspects, so you may take more or less. Just keep in mind
-that we won't consider the next phase without the takehome being attempted, so we recommend not
-taking more than a week.
+There are no hard time requirements. Please take as much time as you need to do your best work.
+However, we won't consider the next phase without the takehome being attempted.
 
 ### Tech Requirements
 
-* You must use NextJS for the front-end. You are encouraged to use third-party libraries
-  such as a form validation library for your own convenience.
+* You must use NextJS for the front-end. Feel free to use the Next 13 app router feature if you
+  prefer. You are encouraged to use any other third-party libraries such as a form validation
+  library for your own convenience.
 * We have set up the front-end with the Tailwind CSS framework, which is what we use in our own
   product. You're not required to use Tailwind, but demonstrating proficiency with it is a plus.
 * The back-end must be done with the provided express server. Add on to it as much as you’d like,
   but the assignment must be completed using express.
 * You must implement your solution using the provided database schema, since this is what we'll be
   using to test your code. The schema is in `packages/back-end/src/services/db.ts`.
+* No lint issues - neither warnings nor errors are allowed.
+* No type issues are allowed.
+* We must be able to build and run a production build on the first try.
 
 ### Important Information
 
 * You must install dependencies first: `npm i`.
-* Then, you can use the following command to start up the frontend and backend: `npm run start`.
-* We've provided a seed script that will scaffold the database with 100 users to test and prototype
+* Then, you can use the following command to start up the front-end and back-end: `npm run start`.
+* We've provided a seed script that will scaffold the database with 1,000 users to test and prototype
   with: `npm run seed`.
-* Once you’re ready for hand-off, there’s a script called “seed-prod” that adds 5,000 members. This
-  is what we will be testing with, so it’d be a good idea to test it once with “production” data to
-  make sure it meets your own expectations: `npm run seed-prod`.
+* Once you’re ready for hand-off, there’s a script called “seed-prod” that adds 5,000 members.
+  **This is what we will be testing with**, so it’d be a good idea to test it once with “production”
+  data to make sure it meets your own expectations: `npm run seed-prod`.
 
 # Assignment
 
 You've been tasked with writing a back-office tool to display all members currently in the database.
 Product owners have also signaled that they would like to be able to manage users (add, edit,
 delete) and search through the database. Both POs also mentioned that they would like to be able to
-do all this on their phone as well, since they find themselves out of the office quite a bit. With
-this unfortunately vague set of requirements in mind, you've cobbled together a basic set of
-user-stories and got them signed off on as adequate for MVP:
+do all this on their phone as well since they find themselves out of the office quite a bit.
+
+With the business needs of the POs in mind, you have created the following user stories that your
+application must fulfill:
 
 * As a user, I want to be able to use the application on both desktop and mobile.
 * As a user, I want to be able to add a new user to the database.
 * As a user, I want to be able to update a user in the database.
 * As a user, I want to be able to delete a user from the database.
-* As a user, I want to be able to sort the table.
-* As a user, I want to be able to search the table.
-* As a user, I want to be able to infintely scroll the table to view more users.
+* As a user, I want to be able to sort the table by column.
+* As a user, I want to be able to search the table by name and email.
+* As a user, I want to be able to infinitely scroll the table to view more users.
 
-Outside of the task, there are also some engineering requirements:
-
-* No lint issues - neither warnings nor errors.
-* No type issues.
-
-Basically, we must be able to build and run a production build on the first try.
-
-When all’s said and done, you aren’t limited to just these requirements. As long as you complete the
-user-stories, you’re free to add whatever else you want, but you’re not in any way required to do
-anything extra. We’re not expecting anything outside of the user-stories and engineering
+You are not limited to the requirements listed above. As long as you complete the
+user stories, you’re free to add whatever else you want, but you’re not required to do
+anything extra. We’re not expecting anything outside of the user stories and engineering
 requirements, so it’s completely up to you as to how far you go.
 
 # Submission
@@ -74,6 +70,7 @@ file called “submission.bundle”. Zip this file up and submit it
 to [this google form](https://forms.gle/wLifwTeipsfshekw9).
 
 # Evaluation
+
 Your submission will be evaluated according to:
 1. The quality of the implementation - Is the code clear, concise, and correct in implementing the desired experience?
 2. The quality of the user experience - Is it the best user experience for mobile and desktop users?

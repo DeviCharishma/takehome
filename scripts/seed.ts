@@ -7,7 +7,7 @@ const isFull = process.argv.includes('--full');
   console.log('Creating tables...');
   await User.sync({ force: true });
 
-  const numToGenerate = isFull ? 5_000 : 100;
+  const numToGenerate = isFull ? 5_000 : 1_000;
 
   const ops = [];
 
