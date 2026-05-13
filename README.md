@@ -59,15 +59,40 @@ user stories, you’re free to add whatever else you want, but you’re not requ
 anything extra. We’re not expecting anything outside of the user stories and engineering
 requirements, so it’s completely up to you as to how far you go.
 
+# Claude Code Requirement
+
+We use Claude Code heavily and want to see how you use it.
+
+Submit alongside your code:
+
+1. **Your Claude Code session files.** Copy the `.jsonl` for each session you used from
+   `~/.claude/projects/<url-encoded-cwd>/<session-id>.jsonl` into the [`claude-sessions/`](claude-sessions/)
+   folder at the root of this repo. Both the Claude Code CLI and the VSCode extension write to
+   this same location, so whichever surface you use is fine. Keep the original filenames or
+   rename them however you like.
+2. **A short writeup (~½ page) in [`CLAUDE_WRITEUP.md`](CLAUDE_WRITEUP.md)** at the root of the
+   repo, covering:
+   * What you delegated to Claude Code, and what you wrote yourself.
+   * Where Claude failed, hallucinated, or led you down the wrong path — and how you caught it.
+
+This is **not** a test of whether you can get Claude to write the whole thing for you. It's a test
+of judgment: knowing what to delegate, what to verify, and what to own. Your git history should
+reflect this — we'll look at commit sizes, messages, and the shape of the work — so commit
+incrementally and write meaningful messages rather than dumping everything in one commit.
+
+Using Claude (or any other AI tool) is encouraged. Pretending you didn't, or submitting code you
+can't explain in a follow-up conversation, is not.
+
 # Submission
 
 _Important: What we expect you submit is **not** just a zipped folder of your source tree._
 
 There are a couple of things to do once you’re ready for hand-off. First and foremost, it’s
-important to **make sure everything is committed to the “master” branch**. Once that’s done, run the
-NPM script “prepare-submission” in the top-level of the workspace, and that will generate a binary
-file called “submission.bundle”. Zip this file up and submit it
-to [this google form](https://forms.gle/wLifwTeipsfshekw9).
+important to **make sure everything is committed to the “master” branch**, including
+`CLAUDE_WRITEUP.md` and your session file(s) in `claude-sessions/`. Once that’s
+done, run the NPM script “prepare-submission” in the
+top-level of the workspace, and that will generate a binary file called “submission.bundle”. Zip
+this file up and submit it to [this google form](https://forms.gle/wLifwTeipsfshekw9).
 
 # Evaluation
 
