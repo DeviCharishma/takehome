@@ -14,6 +14,7 @@ const app = express();
 
 // Attach any middleware
 app.use(Cors);
+app.use(express.json());
 app.use(attachSequelize);
 
 // Read all entries from the "routes" directory. Filter out any entry that is not a file.
