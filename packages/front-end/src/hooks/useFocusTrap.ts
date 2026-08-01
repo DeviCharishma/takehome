@@ -68,7 +68,16 @@ export function useFocusTrap<T extends HTMLElement>({ onEscape, initialFocusRef 
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
-      previouslyFocused?.focus();
+
+      // The trigger element can be gone by the time this runs (e.g. deleting a row removes
+      // its own Delete button). Focus silently falls back to <body> in that case, leaving
+      // keyboard users to Tab in from the very top of the page - fall back to the main
+      // landmark instead, which `index.tsx` makes programmatically focusable for this reason.
+      if (previouslyFocused?.isConnected) {
+        previouslyFocused.focus();
+      } else {
+        document.querySelector<HTMLElement>('main')?.focus();
+      }
     };
   }, [initialFocusRef]);
 

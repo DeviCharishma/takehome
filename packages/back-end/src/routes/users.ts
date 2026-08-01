@@ -23,15 +23,17 @@ const ListUsersQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(100).default(50),
 });
 
-// Shared by POST (full body) and PUT (`.partial()` of this, below).
+// Shared by POST (full body) and PUT (`.partial()` of this, below). Max lengths are generous
+// but bounded - defense in depth alongside the front-end's matching limits, since this is the
+// endpoint that actually persists to the database.
 const UserBodySchema = z.object({
-  firstName: z.string().trim().min(1, 'First name is required.'),
-  middleName: z.string().trim().optional(),
-  lastName: z.string().trim().min(1, 'Last name is required.'),
-  email: z.string().trim().min(1, 'Email is required.').email('Must be a valid email address.'),
-  phoneNumber: z.string().trim().optional(),
-  address: z.string().trim().optional(),
-  adminNotes: z.string().trim().optional(),
+  firstName: z.string().trim().min(1, 'First name is required.').max(100),
+  middleName: z.string().trim().max(100).optional(),
+  lastName: z.string().trim().min(1, 'Last name is required.').max(100),
+  email: z.string().trim().min(1, 'Email is required.').max(254).email('Must be a valid email address.'),
+  phoneNumber: z.string().trim().max(30).optional(),
+  address: z.string().trim().max(300).optional(),
+  adminNotes: z.string().trim().max(2000).optional(),
   registered: z.coerce.date().optional(),
 });
 

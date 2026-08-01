@@ -25,7 +25,7 @@ export default function Home() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <div className={clsx('min-h-screen bg-neutral-50', inter.className)}>
+      <div className={clsx('min-h-screen bg-slate-50', inter.className)}>
         <Header
           search={search}
           onSearchChange={setSearch}
@@ -33,7 +33,10 @@ export default function Home() {
           sortOrder={sortOrder}
           onSortChange={setSort}
         />
-        <main className='mx-auto max-w-5xl px-4 py-4'>
+        {/* `tabIndex={-1}` makes this programmatically focusable (not part of the normal Tab
+            order) - it's the focus-trap's fallback target when a dialog's trigger element has
+            been removed from the DOM by the time the dialog closes (e.g. deleting a row). */}
+        <main tabIndex={-1} className='mx-auto max-w-5xl px-4 py-6 outline-none sm:px-6'>
           <UserList
             search={debouncedSearch}
             sortBy={sortBy}

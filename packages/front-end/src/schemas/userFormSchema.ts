@@ -5,13 +5,18 @@ import type { User } from '../types/user';
 // minimum, never undefined), and "this field is optional" is a business rule enforced by
 // `.min(1)` only where required - not a TS-level optionality concern.
 export const userFormSchema = z.object({
-  firstName: z.string().trim().min(1, 'First name is required.'),
-  middleName: z.string().trim(),
-  lastName: z.string().trim().min(1, 'Last name is required.'),
-  email: z.string().trim().min(1, 'Email is required.').email('Must be a valid email address.'),
-  phoneNumber: z.string().trim(),
-  address: z.string().trim(),
-  adminNotes: z.string().trim(),
+  firstName: z.string().trim().min(1, 'First name is required.').max(100, 'Must be 100 characters or fewer.'),
+  middleName: z.string().trim().max(100, 'Must be 100 characters or fewer.'),
+  lastName: z.string().trim().min(1, 'Last name is required.').max(100, 'Must be 100 characters or fewer.'),
+  email: z
+    .string()
+    .trim()
+    .min(1, 'Email is required.')
+    .max(254, 'Must be 254 characters or fewer.')
+    .email('Must be a valid email address.'),
+  phoneNumber: z.string().trim().max(30, 'Must be 30 characters or fewer.'),
+  address: z.string().trim().max(300, 'Must be 300 characters or fewer.'),
+  adminNotes: z.string().trim().max(2000, 'Must be 2000 characters or fewer.'),
   registered: z.string(),
 });
 

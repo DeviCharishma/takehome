@@ -18,6 +18,9 @@ interface UIStore {
   openEditDialog: (user: User) => void;
   openDeleteDialog: (user: User) => void;
   closeDialog: () => void;
+  // Briefly identifies a just-created/edited row so the list can pulse-highlight it.
+  highlightedUserId: number | null;
+  setHighlightedUserId: (id: number | null) => void;
 }
 
 export const useUIStore = create<UIStore>(set => ({
@@ -26,4 +29,6 @@ export const useUIStore = create<UIStore>(set => ({
   openEditDialog: user => set({ dialog: { type: 'edit', user } }),
   openDeleteDialog: user => set({ dialog: { type: 'delete', user } }),
   closeDialog: () => set({ dialog: { type: 'closed' } }),
+  highlightedUserId: null,
+  setHighlightedUserId: id => set({ highlightedUserId: id }),
 }));

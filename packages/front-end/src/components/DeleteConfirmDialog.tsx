@@ -1,5 +1,6 @@
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import Modal from './Modal';
+import Button from './ui/Button';
 import { ApiError } from '../lib/apiClient';
 import { useDeleteUser } from '../hooks/useUserMutations';
 import { useUIStore } from '../store/useUIStore';
@@ -11,6 +12,9 @@ export default function DeleteConfirmDialog() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isNotFound, setIsNotFound] = useState(false);
   const deleteUser = useDeleteUser();
+  // See the equivalent guard in UserFormModalContent - `deleteUser.isPending` alone can't
+  // catch a second click fired before React re-renders the disabled button.
+  const isDeletingRef = useRef(false);
 
   if (dialog.type !== 'delete') {
     return null;
@@ -19,6 +23,11 @@ export default function DeleteConfirmDialog() {
   const { user } = dialog;
 
   const handleConfirm = async () => {
+    if (isDeletingRef.current) {
+      return;
+    }
+
+    isDeletingRef.current = true;
     setErrorMessage(null);
     setIsNotFound(false);
 
@@ -34,6 +43,8 @@ export default function DeleteConfirmDialog() {
       } else {
         setErrorMessage('Something went wrong. Please try again.');
       }
+    } finally {
+      isDeletingRef.current = false;
     }
   };
 
@@ -44,10 +55,10 @@ export default function DeleteConfirmDialog() {
       closeOnBackdropClick={!deleteUser.isPending}
       titleId={titleId}
     >
-      <h2 id={titleId} className="text-lg font-semibold text-neutral-900">
+      <h2 id={titleId} className="text-lg font-semibold tracking-tight text-slate-900">
         Delete {user.firstName} {user.lastName}?
       </h2>
-      <p className="mt-2 text-sm text-neutral-600">This action cannot be undone.</p>
+      <p className="mt-2 text-sm text-slate-600">This action cannot be undone.</p>
 
       {errorMessage && (
         <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{errorMessage}</p>
@@ -55,33 +66,17 @@ export default function DeleteConfirmDialog() {
 
       <div className="mt-6 flex justify-end gap-2">
         {isNotFound ? (
-          <button
-            type="button"
-            onClick={closeDialog}
-            className="rounded-md bg-neutral-900 px-3 py-2 text-sm font-medium text-white hover:bg-neutral-700"
-          >
-            Close
-          </button>
+          <Button onClick={closeDialog}>Close</Button>
         ) : (
           <>
             {/* Cancel comes first in DOM order so it - not the destructive action - gets
                 default focus on open, matching the focus trap's "focus first element" rule. */}
-            <button
-              type="button"
-              onClick={closeDialog}
-              disabled={deleteUser.isPending}
-              className="rounded-md border border-neutral-300 px-3 py-2 text-sm font-medium hover:bg-neutral-100 disabled:opacity-50"
-            >
+            <Button type="button" variant="secondary" onClick={closeDialog} disabled={deleteUser.isPending}>
               Cancel
-            </button>
-            <button
-              type="button"
-              onClick={handleConfirm}
-              disabled={deleteUser.isPending}
-              className="rounded-md bg-red-600 px-3 py-2 text-sm font-medium text-white hover:bg-red-700 disabled:opacity-50"
-            >
+            </Button>
+            <Button type="button" variant="destructive" onClick={handleConfirm} disabled={deleteUser.isPending}>
               {deleteUser.isPending ? 'Deleting...' : 'Delete'}
-            </button>
+            </Button>
           </>
         )}
       </div>

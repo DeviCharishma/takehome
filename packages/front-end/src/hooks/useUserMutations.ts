@@ -3,6 +3,9 @@ import { apiRequest, ApiError } from '../lib/apiClient';
 import type { ApiSuccess } from '../types/api';
 import type { User } from '../types/user';
 import type { UserFormValues } from '../schemas/userFormSchema';
+import { useUIStore } from '../store/useUIStore';
+
+const HIGHLIGHT_DURATION_MS = 1500;
 
 function toRequestBody(values: UserFormValues) {
   return {
@@ -21,6 +24,7 @@ function toRequestBody(values: UserFormValues) {
 
 export function useCreateUser() {
   const queryClient = useQueryClient();
+  const setHighlightedUserId = useUIStore(state => state.setHighlightedUserId);
 
   return useMutation({
     mutationFn: (values: UserFormValues) =>
@@ -28,14 +32,17 @@ export function useCreateUser() {
         method: 'POST',
         body: JSON.stringify(toRequestBody(values)),
       }),
-    onSuccess: () => {
+    onSuccess: result => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+      setHighlightedUserId(result.data.id);
+      setTimeout(() => setHighlightedUserId(null), HIGHLIGHT_DURATION_MS);
     },
   });
 }
 
 export function useUpdateUser() {
   const queryClient = useQueryClient();
+  const setHighlightedUserId = useUIStore(state => state.setHighlightedUserId);
 
   return useMutation({
     mutationFn: ({ id, values }: { id: number; values: UserFormValues }) =>
@@ -43,8 +50,10 @@ export function useUpdateUser() {
         method: 'PUT',
         body: JSON.stringify(toRequestBody(values)),
       }),
-    onSuccess: () => {
+    onSuccess: result => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+      setHighlightedUserId(result.data.id);
+      setTimeout(() => setHighlightedUserId(null), HIGHLIGHT_DURATION_MS);
     },
   });
 }
