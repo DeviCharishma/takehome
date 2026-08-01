@@ -37,6 +37,7 @@ function SortIcon({ direction }: { direction: SortOrder | null }) {
 
 export default function UserTable({ users, sortBy, sortOrder, onSortChange }: UserTableProps) {
   const openEditDialog = useUIStore(state => state.openEditDialog);
+  const openDeleteDialog = useUIStore(state => state.openDeleteDialog);
 
   return (
     <table className="hidden w-full table-auto border-collapse text-left text-sm md:table">
@@ -76,13 +77,22 @@ export default function UserTable({ users, sortBy, sortOrder, onSortChange }: Us
             <td className="py-2 pr-4 text-neutral-600">{user.phoneNumber ?? '—'}</td>
             <td className="py-2 pr-4 text-neutral-600">{formatDate(user.registered)}</td>
             <td className="py-2 pr-4">
-              <button
-                type="button"
-                onClick={() => openEditDialog(user)}
-                className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
-              >
-                Edit
-              </button>
+              <div className="flex gap-3">
+                <button
+                  type="button"
+                  onClick={() => openEditDialog(user)}
+                  className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
+                >
+                  Edit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => openDeleteDialog(user)}
+                  className="text-sm font-medium text-red-600 hover:text-red-800"
+                >
+                  Delete
+                </button>
+              </div>
             </td>
           </tr>
         ))}

@@ -8,6 +8,7 @@ interface UserCardListProps {
 
 export default function UserCardList({ users }: UserCardListProps) {
   const openEditDialog = useUIStore(state => state.openEditDialog);
+  const openDeleteDialog = useUIStore(state => state.openDeleteDialog);
 
   return (
     <ul className="flex flex-col gap-3 md:hidden">
@@ -22,13 +23,22 @@ export default function UserCardList({ users }: UserCardListProps) {
               {user.phoneNumber && <p className="text-sm text-neutral-500">{user.phoneNumber}</p>}
               <p className="mt-1 text-xs text-neutral-400">Registered {formatDate(user.registered)}</p>
             </div>
-            <button
-              type="button"
-              onClick={() => openEditDialog(user)}
-              className="shrink-0 text-sm font-medium text-neutral-600 hover:text-neutral-900"
-            >
-              Edit
-            </button>
+            <div className="flex shrink-0 flex-col items-end gap-2">
+              <button
+                type="button"
+                onClick={() => openEditDialog(user)}
+                className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={() => openDeleteDialog(user)}
+                className="text-sm font-medium text-red-600 hover:text-red-800"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </li>
       ))}

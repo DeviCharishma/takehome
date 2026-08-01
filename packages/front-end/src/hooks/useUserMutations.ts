@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { apiRequest } from '../lib/apiClient';
+import { apiRequest, ApiError } from '../lib/apiClient';
 import type { ApiSuccess } from '../types/api';
 import type { User } from '../types/user';
 import type { UserFormValues } from '../schemas/userFormSchema';
@@ -45,6 +45,24 @@ export function useUpdateUser() {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+  });
+}
+
+export function useDeleteUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (id: number) => apiRequest<ApiSuccess<{ id: number }>>(`/users/${id}`, { method: 'DELETE' }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users'] });
+    },
+    onError: err => {
+      // A 404 means the row is already gone server-side, so our cache is stale regardless of
+      // this attempt's own outcome - refetch so the list reflects reality.
+      if (err instanceof ApiError && err.status === 404) {
+        queryClient.invalidateQueries({ queryKey: ['users'] });
+      }
     },
   });
 }
