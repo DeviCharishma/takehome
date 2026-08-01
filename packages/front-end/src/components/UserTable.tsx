@@ -76,8 +76,16 @@ export default function UserTable({ users, sortBy, sortOrder, onSortChange, high
               </th>
             );
           })}
-          <th className="py-3 pr-4 text-xs font-semibold uppercase tracking-wide text-slate-500">Phone</th>
-          <th className="py-3 pr-4 text-xs font-semibold uppercase tracking-wide text-slate-500">Registered</th>
+          {/* Phone/Registered are fixed-width, non-text data (a number, a date) - centered per
+              standard table convention, unlike the left-aligned text columns. Symmetric `px-4`
+              (not `pr-4`) so the centering is relative to the whole column, not skewed by
+              one-sided padding. */}
+          <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Phone
+          </th>
+          <th className="px-4 py-3 text-center text-xs font-semibold uppercase tracking-wide text-slate-500">
+            Registered
+          </th>
           <th className="py-3 pr-4 text-xs font-semibold uppercase tracking-wide text-slate-500 sr-only">Actions</th>
         </tr>
       </thead>
@@ -93,8 +101,13 @@ export default function UserTable({ users, sortBy, sortOrder, onSortChange, high
             <td className="break-words py-3 pr-4 font-medium text-slate-900">{user.firstName}</td>
             <td className="break-words py-3 pr-4 font-medium text-slate-900">{user.lastName}</td>
             <td className="break-words py-3 pr-4 text-slate-600">{user.email}</td>
-            <td className="break-words py-3 pr-4 text-slate-600">{user.phoneNumber ?? '—'}</td>
-            <td className="break-words py-3 pr-4 text-slate-600">{formatDate(user.registered)}</td>
+            {/* Phone numbers read as a single unit, so they get `truncate` (nowrap + ellipsis)
+                instead of `break-words` - the opposite of the other columns. Centered along
+                with Registered per standard table convention (fixed-width data centered, text
+                left-aligned), which also makes the empty-value dash read as an intentional
+                placeholder rather than a stray leftover character. */}
+            <td className="truncate px-4 py-3 text-center text-slate-600">{user.phoneNumber || '—'}</td>
+            <td className="break-words px-4 py-3 text-center text-slate-600">{formatDate(user.registered)}</td>
             <td className="py-3 pr-4">
               <div className="flex gap-1">
                 <IconButton label={`Edit ${user.firstName} ${user.lastName}`} onClick={() => openEditDialog(user)}>
