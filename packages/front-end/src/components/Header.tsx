@@ -1,8 +1,11 @@
-import { useState } from 'react';
 import { useUIStore } from '../store/useUIStore';
 
-export default function Header() {
-  const [search, setSearch] = useState('');
+interface HeaderProps {
+  search: string;
+  onSearchChange: (search: string) => void;
+}
+
+export default function Header({ search, onSearchChange }: HeaderProps) {
   const openAddDialog = useUIStore(state => state.openAddDialog);
 
   return (
@@ -21,7 +24,7 @@ export default function Header() {
         <input
           type="search"
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={e => onSearchChange(e.target.value)}
           placeholder="Search by name or email..."
           className="w-full rounded-md border border-neutral-300 px-3 py-2 text-sm placeholder:text-neutral-400 focus:border-neutral-500 focus:outline-none focus:ring-1 focus:ring-neutral-500"
         />

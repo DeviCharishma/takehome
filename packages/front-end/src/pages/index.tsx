@@ -1,13 +1,19 @@
+import { useState } from 'react';
 import clsx from 'clsx';
 import Head from 'next/head';
 import { Inter } from '@next/font/google';
 import Header from '../components/Header';
 import AddUserFab from '../components/AddUserFab';
 import UserList from '../components/UserList';
+import { useDebouncedValue } from '../hooks/useDebouncedValue';
 
 const inter = Inter({ subsets: ['latin'] });
+const SEARCH_DEBOUNCE_MS = 300;
 
 export default function Home() {
+  const [search, setSearch] = useState('');
+  const debouncedSearch = useDebouncedValue(search, SEARCH_DEBOUNCE_MS);
+
   return (
     <>
       <Head>
@@ -16,9 +22,9 @@ export default function Home() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
       <div className={clsx('min-h-screen bg-neutral-50', inter.className)}>
-        <Header />
+        <Header search={search} onSearchChange={setSearch} />
         <main className='mx-auto max-w-5xl px-4 py-4'>
-          <UserList />
+          <UserList search={debouncedSearch} />
         </main>
         <AddUserFab />
       </div>

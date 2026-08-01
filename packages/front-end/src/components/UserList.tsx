@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import { useUsers } from '../hooks/useUsers';
 import { useInfiniteScrollSentinel } from '../hooks/useInfiniteScrollSentinel';
 import { ApiError } from '../lib/apiClient';
@@ -6,7 +7,11 @@ import UserCardList from './UserCardList';
 
 const GENERIC_ERROR_MESSAGE = 'Unable to load users. Please check your connection and try again.';
 
-export default function UserList() {
+interface UserListProps {
+  search: string;
+}
+
+export default function UserList({ search }: UserListProps) {
   const {
     data,
     isLoading,
@@ -15,8 +20,14 @@ export default function UserList() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isFetching,
     refetch,
-  } = useUsers();
+  } = useUsers({ search });
+
+  // True while a search/sort change is fetching its replacement page in the background
+  // (previous results are still on screen via `placeholderData`), as opposed to the initial
+  // load or an infinite-scroll page fetch, which have their own indicators.
+  const isUpdatingResults = isFetching && !isLoading && !isFetchingNextPage;
 
   const sentinelRef = useInfiniteScrollSentinel({
     onIntersect: fetchNextPage,
@@ -52,15 +63,21 @@ export default function UserList() {
   if (users.length === 0) {
     return (
       <div className="flex min-h-[50vh] items-center justify-center text-sm text-neutral-400">
-        No users found.
+        {search ? `No users found for "${search}".` : 'No users found.'}
       </div>
     );
   }
 
   return (
     <div>
-      <UserTable users={users} />
-      <UserCardList users={users} />
+      {isUpdatingResults && (
+        <p className="pb-2 text-xs text-neutral-400">Updating results...</p>
+      )}
+
+      <div className={clsx(isUpdatingResults && 'opacity-60 transition-opacity')}>
+        <UserTable users={users} />
+        <UserCardList users={users} />
+      </div>
 
       <div ref={sentinelRef} className="h-1" />
 

@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { apiRequest } from '../lib/apiClient';
 import type { ApiListSuccess } from '../types/api';
 import type { User } from '../types/user';
@@ -38,5 +38,10 @@ export function useUsers({ search = '', sortBy = 'last_name', sortOrder = 'asc' 
       const loaded = allPages.reduce((sum, page) => sum + page.data.length, 0);
       return loaded < lastPage.total ? loaded : undefined;
     },
+    // `search`/`sortBy`/`sortOrder` are part of the query key, so changing them starts a
+    // fresh paginated query rather than appending to the old one. Without this, that switch
+    // would blank the list back to a loading state on every search keystroke; this keeps the
+    // previous results on screen until the new ones arrive.
+    placeholderData: keepPreviousData,
   });
 }
