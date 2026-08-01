@@ -1,6 +1,7 @@
 import type { User } from '../types/user';
 import type { SortBy, SortOrder } from '../hooks/useUsers';
 import { formatDate } from '../lib/formatDate';
+import { useUIStore } from '../store/useUIStore';
 
 interface UserTableProps {
   users: User[];
@@ -35,6 +36,8 @@ function SortIcon({ direction }: { direction: SortOrder | null }) {
 }
 
 export default function UserTable({ users, sortBy, sortOrder, onSortChange }: UserTableProps) {
+  const openEditDialog = useUIStore(state => state.openEditDialog);
+
   return (
     <table className="hidden w-full table-auto border-collapse text-left text-sm md:table">
       <thead>
@@ -61,6 +64,7 @@ export default function UserTable({ users, sortBy, sortOrder, onSortChange }: Us
           })}
           <th className="py-2 pr-4 font-medium">Phone</th>
           <th className="py-2 pr-4 font-medium">Registered</th>
+          <th className="py-2 pr-4 font-medium sr-only">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -71,6 +75,15 @@ export default function UserTable({ users, sortBy, sortOrder, onSortChange }: Us
             <td className="py-2 pr-4 text-neutral-600">{user.email}</td>
             <td className="py-2 pr-4 text-neutral-600">{user.phoneNumber ?? '—'}</td>
             <td className="py-2 pr-4 text-neutral-600">{formatDate(user.registered)}</td>
+            <td className="py-2 pr-4">
+              <button
+                type="button"
+                onClick={() => openEditDialog(user)}
+                className="text-sm font-medium text-neutral-600 hover:text-neutral-900"
+              >
+                Edit
+              </button>
+            </td>
           </tr>
         ))}
       </tbody>

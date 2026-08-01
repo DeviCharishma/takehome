@@ -5,6 +5,7 @@ import { Inter } from '@next/font/google';
 import Header from '../components/Header';
 import AddUserFab from '../components/AddUserFab';
 import UserList from '../components/UserList';
+import UserFormModal from '../components/UserFormModal';
 import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { useSortState } from '../hooks/useSortState';
 
@@ -40,6 +41,7 @@ export default function Home() {
           />
         </main>
         <AddUserFab />
+        <UserFormModal />
       </div>
     </>
   );
