@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { useUsers } from '../hooks/useUsers';
+import type { SortBy, SortOrder } from '../hooks/useUsers';
 import { useInfiniteScrollSentinel } from '../hooks/useInfiniteScrollSentinel';
 import { ApiError } from '../lib/apiClient';
 import UserTable from './UserTable';
@@ -9,9 +10,12 @@ const GENERIC_ERROR_MESSAGE = 'Unable to load users. Please check your connectio
 
 interface UserListProps {
   search: string;
+  sortBy: SortBy | null;
+  sortOrder: SortOrder;
+  onSortChange: (column: SortBy) => void;
 }
 
-export default function UserList({ search }: UserListProps) {
+export default function UserList({ search, sortBy, sortOrder, onSortChange }: UserListProps) {
   const {
     data,
     isLoading,
@@ -22,7 +26,7 @@ export default function UserList({ search }: UserListProps) {
     isFetchingNextPage,
     isFetching,
     refetch,
-  } = useUsers({ search });
+  } = useUsers({ search, sortBy, sortOrder });
 
   // True while a search/sort change is fetching its replacement page in the background
   // (previous results are still on screen via `placeholderData`), as opposed to the initial
@@ -75,7 +79,7 @@ export default function UserList({ search }: UserListProps) {
       )}
 
       <div className={clsx(isUpdatingResults && 'opacity-60 transition-opacity')}>
-        <UserTable users={users} />
+        <UserTable users={users} sortBy={sortBy} sortOrder={sortOrder} onSortChange={onSortChange} />
         <UserCardList users={users} />
       </div>
 

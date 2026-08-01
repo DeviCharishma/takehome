@@ -8,20 +8,26 @@ const PAGE_SIZE = 50;
 export type SortBy = 'first_name' | 'last_name' | 'email' | 'created_at';
 export type SortOrder = 'asc' | 'desc';
 
+const DEFAULT_SORT_BY: SortBy = 'last_name';
+
 interface UseUsersOptions {
   search?: string;
-  sortBy?: SortBy;
+  // `null`/omitted means "no explicit sort chosen" - falls back to the default below, but is
+  // tracked separately so the UI can tell "default" apart from "user picked this column".
+  sortBy?: SortBy | null;
   sortOrder?: SortOrder;
 }
 
-export function useUsers({ search = '', sortBy = 'last_name', sortOrder = 'asc' }: UseUsersOptions = {}) {
+export function useUsers({ search = '', sortBy, sortOrder = 'asc' }: UseUsersOptions = {}) {
+  const effectiveSortBy = sortBy ?? DEFAULT_SORT_BY;
+
   return useInfiniteQuery({
-    queryKey: ['users', { search, sortBy, sortOrder }],
+    queryKey: ['users', { search, sortBy: effectiveSortBy, sortOrder }],
     queryFn: ({ pageParam, signal }) => {
       const params = new URLSearchParams({
         offset: String(pageParam),
         limit: String(PAGE_SIZE),
-        sortBy,
+        sortBy: effectiveSortBy,
         sortOrder,
       });
 
