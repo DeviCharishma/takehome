@@ -28,6 +28,8 @@ const SORT_OPTIONS: { key: string; label: string; sortBy: SortBy | null; sortOrd
   { key: 'last_name:desc', label: 'Last Name (Z–A)', sortBy: 'last_name', sortOrder: 'desc' },
   { key: 'email:asc', label: 'Email (A–Z)', sortBy: 'email', sortOrder: 'asc' },
   { key: 'email:desc', label: 'Email (Z–A)', sortBy: 'email', sortOrder: 'desc' },
+  { key: 'registered:desc', label: 'Registered Date (Newest)', sortBy: 'registered', sortOrder: 'desc' },
+  { key: 'registered:asc', label: 'Registered Date (Oldest)', sortBy: 'registered', sortOrder: 'asc' },
 ];
 
 export default function Header({ search, onSearchChange, sortBy, sortOrder, onSortChange }: HeaderProps) {

@@ -6,18 +6,35 @@ import { User } from '../services/db';
 
 // Maps the API's snake_case sort keys to the model's actual (camelCase) attributes.
 // Also doubles as an allowlist so arbitrary column names can't reach the query.
+// `registered` (the business "when they registered" date) is distinct from `created_at` (row
+// insert time) - the front-end's Registered column displays `registered`, so it has to sort by
+// that same field, not `created_at`, or the visible dates wouldn't appear sorted.
 const SORTABLE_COLUMNS = {
   first_name: 'firstName',
   last_name: 'lastName',
   email: 'email',
   created_at: 'createdAt',
+  registered: 'registered',
 } as const;
+
+// Tiebreakers applied (in order, same direction as the primary sort) before the final `id`
+// tiebreak below - e.g. sorting by last_name alone leaves same-surname rows in a visually
+// arbitrary order, since SQL doesn't guarantee tie order on its own. Email is already unique,
+// so it needs no name-based tiebreaker; created_at/registered are timestamps, not names, so
+// they're left as-is.
+const SORT_TIEBREAKERS: Record<keyof typeof SORTABLE_COLUMNS, ReadonlyArray<(typeof SORTABLE_COLUMNS)[keyof typeof SORTABLE_COLUMNS]>> = {
+  first_name: ['lastName'],
+  last_name: ['firstName'],
+  email: [],
+  created_at: [],
+  registered: [],
+};
 
 const SEARCHABLE_COLUMNS = ['firstName', 'lastName', 'email'] as const;
 
 const ListUsersQuerySchema = z.object({
   search: z.string().trim().min(1).optional(),
-  sortBy: z.enum(['first_name', 'last_name', 'email', 'created_at']).default('last_name'),
+  sortBy: z.enum(['first_name', 'last_name', 'email', 'created_at', 'registered']).default('last_name'),
   sortOrder: z.enum(['asc', 'desc']).default('asc'),
   offset: z.coerce.number().int().min(0).default(0),
   limit: z.coerce.number().int().min(1).max(100).default(50),
@@ -85,10 +102,12 @@ const UsersRouter: IRoute = {
             }
           : undefined;
 
-        // `id` is a secondary sort key so pagination stays stable when the primary sort
-        // column has duplicate values.
+        // Primary column, then its tiebreakers (same direction - flipping to desc reverses the
+        // tie order too, rather than mixing directions), then `id` as the final tiebreak so
+        // pagination stays stable even when every preceding column happens to tie.
         const order: Order = [
           [SORTABLE_COLUMNS[sortBy], sortOrder],
+          ...SORT_TIEBREAKERS[sortBy].map((column): [string, 'asc' | 'desc'] => [column, sortOrder]),
           ['id', 'asc'],
         ];
 

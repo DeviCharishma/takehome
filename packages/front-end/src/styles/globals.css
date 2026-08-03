@@ -5,6 +5,14 @@
 html {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* The desktop table's Phone/Registered/Actions columns use fixed pixel widths so their
+     content never truncates, wrapped in their own `overflow-x-auto` region (UserTable.tsx) so
+     *that* scrolls instead of the page. In some browsers a nested auto-scroll region wider than
+     the viewport still leaves the root document itself scrollable by a few pixels, even though
+     every element's own layout box measures within bounds - clipping it here, on the actual
+     root scroller, is the one place that reliably stops it regardless of what nested content
+     causes it. */
+  overflow-x: hidden;
 }
 
 ::selection {

@@ -5,7 +5,7 @@ import type { User } from '../types/user';
 
 const PAGE_SIZE = 50;
 
-export type SortBy = 'first_name' | 'last_name' | 'email' | 'created_at';
+export type SortBy = 'first_name' | 'last_name' | 'email' | 'created_at' | 'registered';
 export type SortOrder = 'asc' | 'desc';
 
 const DEFAULT_SORT_BY: SortBy = 'last_name';
